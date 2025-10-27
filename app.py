@@ -1,4 +1,4 @@
-from flask import Flask, render_template, url_for,request
+from flask import Flask, render_template, url_for,request,jsonify
 import requests as req
 import json
 import cloudinary
@@ -10,6 +10,9 @@ from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 from email import encoders
 import os
+
+import random
+import datetime
 
 app = Flask(__name__)
 
@@ -165,6 +168,150 @@ def loadProdDetalhes(prod):
 	return ["error"]
 
 
+def doReserv(prod,nomecl,tellcl):
+	
+	bancoBD = my_banco_base("p")
+	
+	precoP = ""
+	prod_link = prod.split("_")
+	
+	nome_link = prod_link[0]
+	num_link = prod_link[1]
+	
+	nomeCliente = nomecl
+	tellCliente = tellcl
+	
+	dataAgora = datetime.datetime.now()
+	
+	
+	dataAgora = str(dataAgora).split(" ")[0]
+	
+	
+	dataAgora = dataAgora.replace("-","/")
+	
+	
+	for cp in bancoBD:
+		
+		prodt = bancoBD[cp]
+		
+		numProd = prodt["numero"]
+		
+		
+		if str(numProd) == str(num_link):
+			
+			precoP = prodt["preco"]
+		
+	
+	
+	
+	urlReserv = "https://bs-siteof-sell-default-rtdb.firebaseio.com/reservas/.json"
+	
+	
+	
+	idsrvs = [627,72782,25522]
+	while True:
+		idrv = random.randint(10000,99999)
+		
+		if idrv in idsrvs:
+			continue
+		else:
+			break
+	
+	
+	dataPush = {
+		"artigo n": num_link,
+		"nome" : nomeCliente,
+		"preco": precoP,
+		"produto": nome_link,
+		"status" : "pentente",
+		"tell" : tellCliente,
+		"idrv" : str(idrv),
+		
+		"data": dataAgora
+	
+	}
+	
+	
+	
+	if 1 == 1:
+		
+		resP = req.post(urlReserv, json.dumps(dataPush))
+		
+		
+		
+		
+		
+		
+		
+		if resP.status_code == 200:
+			return ["Reserva Feita com sucesso",str(idrv)]
+	else:
+		
+		...
+	
+	
+	
+		
+		
+	
+	return ["error"]
+
+def loadRmProduct(prod):
+	rota = "/produtos"
+	
+	
+	urlPDT = "https://bs-siteof-sell-default-rtdb.firebaseio.com"+rota+"/.json"
+	
+	
+	resProd = req.get(urlPDT)
+	
+	bancoProd = resProd.json()
+	
+	
+	
+	#print(bancoProd)
+	
+	prod_link = prod.split("_")
+	
+	nome_prod_link = prod_link[0]
+	num_artigo_link = prod_link[1]
+	
+	linkimg = url_for('static', filename='imageProdut/carbrador.webp')
+	
+	
+	
+	prod = ""
+	for i in bancoProd:
+		
+		produto = bancoProd[i]
+		
+		nome_prod = produto["nome"]
+		
+		
+		preco_prod = produto["preco"]
+		num_prod = produto["numero"]
+		link_img = produto["img_link"]
+		detalhe_prod = produto["obse"]
+		
+		linkimg = link_img
+		
+		if nome_prod == nome_prod_link:
+			
+			#Eliminar este Produto...
+			urlRM = "https://bs-siteof-sell-default-rtdb.firebaseio.com"+rota+"/"+i+".json"
+			
+			res = req.delete(urlRM)
+			print("FUNCIONOU... BUCH")
+			
+			
+			
+			
+			return [nome_prod,preco_prod,num_prod,linkimg,detalhe_prod]
+		
+		
+	
+	return ["error"]
+
 
 def loadExist(prod):
 	
@@ -226,7 +373,7 @@ def loadDash():
                             <td>{precoR}</td>
                             <td>{numArg}</td>
                             <td>{statusR}</td>
-                            <td><button>Editar</button></td>
+                            <td><button style="border: 1px solid green; padding: 3px;">Concluir</button></td>
                         </tr>
                         
 		
@@ -483,28 +630,70 @@ def edit_product(prod):
 		
 		nome = DProd[0]
 		
+		
 		nArtigo = DProd[2]
 		linkImg = DProd[3]
 		detalheProd = DProd[4]
 		precoProd = DProd[1]
+		linkRM = nome+"_"+nArtigo
 		
 		
 		
-		return render_template("edit_product.html",imgProd = linkImg,nomeProd = nome,precoProd = precoProd,detalheProd = detalheProd,linkReserv = prod)
+		return render_template("edit_product.html",imgProd = linkImg,nomeProd = nome,precoProd = precoProd,detalheProd = detalheProd,linkReserv = prod,linkrm = linkRM)
+	
+	
+@app.route("/eletro-rm-product/<linkRM1>")
+def rm_product(linkRM1):
+	
+	rmLink = linkRM1
+	
+	DProd = loadRmProduct(rmLink)
+	
+	rmLink = rmLink.split("_")
+	
+	
+	#print("_____--_____--______")
+	#print(str(rmLink))
+	
+	
+	p_nome = rmLink[0]
+	n_artigo = rmLink[1]
+	
+	#print(DProd)
+	
+	#print("_____--_____--______")
 	
 	
 	
-	
+	return jsonify({'nome': p_nome})
 	
 
-@app.route("/reserv/<prod>")
+@app.route("/reserv/<prod>", methods=["POST","GET"])
 def reserv(prod):
 	
 	loadExist = True
 	#loadExist(prod)
-	
 	nome = prod.split("_")[0]
 	artigon = prod.split("_")[1]
+	lpost = "/reserv/"+prod
+	
+	
+	
+	if request.method == "POST":
+		#prod = "buch"
+		print("o metodo é post agora")
+		
+		nomeCl = request.form.get("nome")
+		tellCl= request.form.get("tell")
+		#precoP = request.form.get("precoproduto")
+		
+		res = doReserv(prod,nomeCl,tellCl)
+		
+		dmsg = res[0]+"\n"+res[1]
+		return render_template("reserv.html",nomeProd = nome, artigoN = artigon,lpost = lpost,dataMsg = dmsg)
+	
+	
+	dataMsg = ""
 	
 	
 	if loadExist == False:
@@ -515,9 +704,7 @@ def reserv(prod):
 	
 	
 	
-	
-	
-	return render_template("reserv.html",nomeProd = nome, artigoN = artigon)
+	return render_template("reserv.html",nomeProd = nome, artigoN = artigon,lpost = lpost,dataMsg = dataMsg)
 
 
 
@@ -570,7 +757,7 @@ def findPeca():
 	return render_template("findpeca.html",products = str(products))
 
 
-@app.route("/admin-login",methods=["post","get"])
+@app.route("/eletro-admin-login",methods=["post","get"])
 def goAdmin():
 	
 	if request.method == "POST":
@@ -648,3 +835,5 @@ def service():
 
 
 
+if __name__ == "__main__":
+    app.run(debug="True")

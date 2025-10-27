@@ -362,15 +362,17 @@ main .container .freserv{
   
 }
 
- .client_section .btnCx:hover{
+.sc_cl_btn .btnCx:hover{
 
   border: 2px solid #0355CC;
+  background-color: white;
+  color: orange;
  }
 
 
- .client_section .btnCx{
-  width: 200px;
-  padding: 15px 5px;
+ .sc_cl_btn .btnCx{
+ width: 300px;
+  padding: 10px 40px;
   background-color: #0355CC;
   border: none;
   border-radius: 3px;
@@ -477,6 +479,7 @@ main .container .freserv{
   height: 35px;
   color: white;
   background-color: darkorange;
+  text-align: center;
 
  }
 
@@ -539,6 +542,7 @@ main .container .freserv{
 }
 
 .heading_container h2 {
+font-size: 14px;
   font-weight: bold;
   display: -webkit-box;
   display: -ms-flexbox;
@@ -599,6 +603,35 @@ a:focus {
 
 .header_section .header_top .contact_nav a {
   color: #ffffff;
+}
+
+
+.detail-box a{
+    	background-color: #ff222211;
+    	border-radius: 10px;
+    	border: 2px solid orange;
+    	padding: 10px;
+    }
+
+.droid-box a{
+	display: none;
+		width: 100%;
+		text-align: center;
+    	background-color: #ff222211;
+    	border-radius: 10px;
+    	border: 2px solid orange;
+    	padding: 10px;
+    	position: center;
+    }
+
+
+    
+.droid-box{
+	width: 100%;
+	text-align: center;
+	padding: 10px 25%;
+	align-items: center;
+
 }
 
 .header_section .header_top .contact_nav a i {

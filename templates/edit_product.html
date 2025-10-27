@@ -107,8 +107,8 @@
            <button onclick="eliOrNoEli()" style="background-color: red; color: white;">Eliminar
             </button>
             
-              <a id="cfm_pdt" href="/contact"><button style="background-color: orange; color: white;">Confirmar Remocao
-            </button></a>
+              <button id="cfm_pdt" style="background-color: orange; color: white;">Confirmar Remocao
+            </button>
             
             
             
@@ -155,6 +155,24 @@ function eliOrNoEli(){
 	}
 	
 }
+
+
+
+
+	document.getElementById("cfm_pdt").addEventListener('click', () => {
+		
+		alert("O sistema esta a Processar \n click OK");
+		
+		fetch("/eletro-rm-product/{{linkrm}}")
+			.then(response => response.json())
+			.then(data => {
+				alert(`Produto: ${data.nome} Eliminado.`) ;
+			
+			});
+	});
+
+</script>
+
 
 
 </script>

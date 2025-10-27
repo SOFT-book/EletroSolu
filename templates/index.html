@@ -15,7 +15,7 @@
   <title>Eletro Solucoes </title>
 
 
-  <link rel="stylecheet" type="text/css" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+  <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
 
 
 
@@ -89,7 +89,7 @@ Peças para Todos os Tipos de Viaturas
               <p>
                 
               </p>
-              <a href="contact.html">
+              <a href="/contact">
                 Contacte-nos
               </a>
             </div>
@@ -98,7 +98,19 @@ Peças para Todos os Tipos de Viaturas
             <div class="img-box">
               <img src="{{url_for('static', filename='imgGame/trr1.png')}}" alt="imagem de lionel messi">
             </div>
+            
+          
           </div>
+          <div class="col-md-6">
+          <div class="droid-box">
+             <a href="/contact">
+                Contacte-nos
+              </a>
+              
+             </div>
+            </div>
+          
+         
         </div>
       </div>
     </section>
@@ -145,8 +157,8 @@ Peças para Todos os Tipos de Viaturas
   </section>
 
 
-  <section class="client_section ">
-    <div class="container swiper">
+  <section class="client_section">
+    <div class="container">
       <div class="heading_container heading_center">
         <h2>
           Encontre a Peça Perfeita para o Seu Veículo
@@ -163,22 +175,19 @@ Peças para Todos os Tipos de Viaturas
 
         
 
-        <div class="swiper-pagination">
-          <div class="swiper-button-prev"></div>
-          <div class="swiper-button-next"></div>
         
-        </div>
       </div>
-      <a href="/findpeca">
-        <button class="btnCx">
-          
-                      MAIS PECAS
-                    
-                      </button>
-                      </a>
+      <br>
+      
     </div>
+   
   </section>
-
+  <section class="sc_cl_btn">
+   <a class="btnCx" href="/findpeca">
+      MAIS PECAS
+      </a>
+  </section>
+<br>
   <!-- end client section -->
 <section  class="about_section layout_padding-bottom" >
   <div class="container">
@@ -269,7 +278,7 @@ Peças para Todos os Tipos de Viaturas
 
 <section>
  	<div class="container">
- 		<a href="/adimin%login">
+ 		<a href="/eletro-admin-login">
  			<div class=>	
  				<p>{{go_dash}}</a>
  			</div>

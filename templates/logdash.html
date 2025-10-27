@@ -31,16 +31,24 @@ body{
     border-radius: 20px 25% 25% 20px;
     width: 49%;
     color: white;
+    padding: 10px;
 }
 
 .d--campany img{
     width: 80px;
     height: 80px;
+    margin-top: 10px;
     
 }
 form{
     background-color: none ;
     width: 49%;
+}
+form button{
+	width: 200px;
+	padding: 10px 5px;
+	border-radius: 10px;
+	margin-bottom: 10px;
 }
 
 form input{
@@ -174,7 +182,7 @@ form input{
                 <div class="d--campany">
 
                     <div class="logo-login">
-                        <img src="{{url_for('static', filename='imgGame/icondl1.png')}}" />
+                        <img style="margin-top: 10px; width: 50px; height: 50px; border-radius: 25px;" src="{{url_for('static', filename='icons/iconsolu.png')}}" />
                     </div>
                     <div class="content-main-login">
                         <h2 class="title--login">
@@ -186,7 +194,7 @@ form input{
                         </p>
                     </div>
                 </div>
-                <form method= "post"  action="/admin-login">
+                <form method= "post"  action="/eletro-admin-login">
                     <h2>Faca Login Admin</h2><br>
                     <p>{{info}}</p>
                     <input type="name" name="nome" placeholder="Usuario" >
